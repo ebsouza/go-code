@@ -13,8 +13,12 @@ import (
 
 var todoFileName = ".todo.json"
 
-func listPrinter(l *todo.List, verbose bool) {
+func listPrinter(l *todo.List, avoidComplete bool, verbose bool) {
 	for index, item := range *l {
+		if avoidComplete && item.Done {
+			continue
+		}
+
 		suffix := "[X]"
 
 		var message string
@@ -57,6 +61,7 @@ func main() {
 	complete := flag.Int("complete", 0, "Item to be completed")
 	delete := flag.Int("delete", 0, "Item to be removed")
 	verbose := flag.Bool("verbose", false, "Show complete information")
+	avoidComplete := flag.Bool("avoid_complete", false, "Show only incomplete tasks")
 
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), "Title of help message \n")
@@ -79,7 +84,7 @@ func main() {
 
 	switch {
 	case *list:
-		listPrinter(l, *verbose)
+		listPrinter(l, *avoidComplete, *verbose)
 
 	case *complete > 0:
 		if err := l.Complete(*complete); err != nil {

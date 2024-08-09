@@ -122,4 +122,19 @@ func TestTodoCLI(t *testing.T) {
 		}
 	})
 
+	t.Run("ListTasksAvoidComplete", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-list", "-avoid_complete")
+		out, err := cmd.CombinedOutput()
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		expected := fmt.Sprintf("1 - %s\n", task2)
+
+		if expected != string(out) {
+			t.Errorf("Expected %q, got %q instead\n", expected, string(out))
+		}
+	})
+
 }
