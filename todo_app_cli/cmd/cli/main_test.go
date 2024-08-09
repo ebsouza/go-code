@@ -106,10 +106,19 @@ func TestTodoCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		expected := fmt.Sprintf("1 - %s\n2 - %s\n3 - %s\n", task1, task2, task3)
+		expected := fmt.Sprintf("1 - %s\n2 - %s [X]\n", task2, task3)
 
 		if expected != string(out) {
 			t.Errorf("Expected %q, got %q instead\n", expected, string(out))
+		}
+	})
+
+	t.Run("ListTasksVerbose", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-list", "-verbose")
+		_, err := cmd.CombinedOutput()
+
+		if err != nil {
+			t.Fatal(err)
 		}
 	})
 

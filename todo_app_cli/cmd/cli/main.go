@@ -13,10 +13,17 @@ import (
 
 var todoFileName = ".todo.json"
 
-func listPrinter(l *todo.List) {
+func listPrinter(l *todo.List, verbose bool) {
 	for index, item := range *l {
 		suffix := "[X]"
-		message := fmt.Sprintf("%d - %s", index+1, item.Task)
+
+		var message string
+		if verbose {
+			message = fmt.Sprintf("%d - Name: %s - Created at: %s", index+1, item.Task, item.CompletedAt)
+		} else {
+			message = fmt.Sprintf("%d - %s", index+1, item.Task)
+		}
+
 		if item.Done {
 			fmt.Println(message, suffix)
 			continue
@@ -49,6 +56,7 @@ func main() {
 	list := flag.Bool("list", false, "List all incomplete tasks")
 	complete := flag.Int("complete", 0, "Item to be completed")
 	delete := flag.Int("delete", 0, "Item to be removed")
+	verbose := flag.Bool("verbose", false, "Show complete information")
 
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), "Title of help message \n")
@@ -71,7 +79,7 @@ func main() {
 
 	switch {
 	case *list:
-		listPrinter(l)
+		listPrinter(l, *verbose)
 
 	case *complete > 0:
 		if err := l.Complete(*complete); err != nil {
