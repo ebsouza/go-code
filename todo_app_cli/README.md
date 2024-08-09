@@ -19,7 +19,7 @@ go build -o todo_app cmd/cli/main.go
 ```
 
 ```
-echo "Task1" ./todo_app -add
+echo "Task1" | ./todo_app -add
 ```
 
 ```
@@ -28,6 +28,10 @@ echo "Task1" ./todo_app -add
 
 ```
 ./todo_app -complete <Task Index>
+```
+
+```
+./todo_app -delete <Task Index>
 ```
 
 ```

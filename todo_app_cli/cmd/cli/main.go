@@ -48,6 +48,7 @@ func main() {
 	task := flag.String("task", "", "Task to be included in the ToDo list")
 	list := flag.Bool("list", false, "List all incomplete tasks")
 	complete := flag.Int("complete", 0, "Item to be completed")
+	delete := flag.Int("delete", 0, "Item to be removed")
 
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), "Title of help message \n")
@@ -74,6 +75,17 @@ func main() {
 
 	case *complete > 0:
 		if err := l.Complete(*complete); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		if err := l.Save(todoFileName); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+	case *delete > 0:
+		if err := l.Delete(*delete); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
