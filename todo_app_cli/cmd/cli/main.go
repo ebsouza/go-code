@@ -56,7 +56,6 @@ func getTask(r io.Reader, args ...string) (string, error) {
 
 func main() {
 	add := flag.Bool("add", false, "Add task to the ToDo List")
-	task := flag.String("task", "", "Task to be included in the ToDo list")
 	list := flag.Bool("list", false, "List all incomplete tasks")
 	complete := flag.Int("complete", 0, "Item to be completed")
 	delete := flag.Int("delete", 0, "Item to be removed")
@@ -102,14 +101,6 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-
-		if err := l.Save(todoFileName); err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
-
-	case *task != "":
-		l.Add(*task)
 
 		if err := l.Save(todoFileName); err != nil {
 			fmt.Fprintln(os.Stderr, err)

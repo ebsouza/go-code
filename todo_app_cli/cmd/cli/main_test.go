@@ -41,8 +41,6 @@ func TestMain(m *testing.M) {
 }
 
 func TestTodoCLI(t *testing.T) {
-	task1 := "The first task"
-
 	dir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
@@ -50,17 +48,16 @@ func TestTodoCLI(t *testing.T) {
 
 	cmdPath := filepath.Join(dir, binName)
 
-	t.Run("AddTask", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-task", task1)
+	task1 := "Task 1"
+	task2 := "Task 2"
+	t.Run("AddTaskFromArguments", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-add", task1)
 
 		if err := cmd.Run(); err != nil {
 			t.Fatal(err)
 		}
-	})
 
-	task2 := "Task 2"
-	t.Run("AddTaskFromArguments", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-add", task2)
+		cmd = exec.Command(cmdPath, "-add", task2)
 
 		if err := cmd.Run(); err != nil {
 			t.Fatal(err)
