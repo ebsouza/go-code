@@ -9,7 +9,7 @@ type stepErr struct {
 }
 
 func (s *stepErr) Error() string {
-	return fmt.Sprintf("Step: %q: %s: Cause: %v")
+	return fmt.Sprintf("Step: %q: %s: Cause: %v", s.step, s.msg, s.cause)
 }
 
 func (s *stepErr) Is(target error) bool {
@@ -21,6 +21,6 @@ func (s *stepErr) Is(target error) bool {
 	return t.step == s.step
 }
 
-func (s *stepErr) Unwrap() err {
+func (s *stepErr) Unwrap() error {
 	return s.cause
 }
