@@ -1,6 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var (
+	ErrValidation = errors.New("Validation failed")
+	ErrSignal     = errors.New("Received signal")
+)
 
 type stepErr struct {
 	step  string
