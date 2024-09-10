@@ -2,6 +2,7 @@ package scan
 
 import (
 	"errors"
+	"os"
 	"testing"
 )
 
@@ -103,4 +104,49 @@ func TestRemove(t *testing.T) {
 		})
 	}
 
+}
+
+func TestSaveLoad(t *testing.T) {
+	hl1 := HostsList{}
+	hl2 := HostsList{}
+
+	hostName := "host1"
+	hl1.Add(hostName)
+
+	tf, err := os.CreateTemp("", "")
+
+	if err != nil {
+		t.Fatalf("Error creating temporary file: %s", err)
+	}
+	defer os.Remove(tf.Name())
+
+	if err := hl1.Save(tf.Name()); err != nil {
+		t.Fatalf("Error saving list to file: %s", err)
+	}
+
+	if err := hl2.Load(tf.Name()); err != nil {
+		t.Fatalf("Error getting list from file: %s", err)
+	}
+
+	if hl1.Hosts[0] != hl2.Hosts[0] {
+		t.Errorf("Host %q should match %q host", hl1.Hosts[0], hl2.Hosts[0])
+	}
+}
+
+func TestLoadNoFile(t *testing.T) {
+	tf, err := os.CreateTemp("", "")
+
+	if err != nil {
+		t.Fatalf("Error creating temp file: %s", err)
+	}
+
+	if err := os.Remove(tf.Name()); err != nil {
+		t.Fatalf("Error deleting temp file: %s", err)
+	}
+
+	hl := HostsList{}
+
+	if err := hl.Load(tf.Name()); err != nil {
+		t.Errorf("Expected no error, got %q instead\n", err)
+	}
 }
