@@ -17,3 +17,8 @@ export PATH=$(go env GOPATH)/bin:$PATH
 go mod init github.com/ebsouza/go-code/pscan
 cobra-cli init
 ```
+
+#### Run tests
+```
+go test ./...
+```
