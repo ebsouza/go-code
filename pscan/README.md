@@ -22,3 +22,22 @@ cobra-cli init
 ```
 go test ./...
 ```
+
+#### Build application
+```
+go build -o pScan main.go
+```
+
+#### Run application
+```
+./pScan hosts add localhost
+./pScan hosts list
+./pScan scan --ports 22,80,443
+```
+
+
+#### Generate Documentation
+```
+mkdir docs
+./pScan docs --dir ./docs
+```
